@@ -1,22 +1,22 @@
 # Sample Data
 
-## Prepare
+## 1. Prepare
 
-Download the file to the specified directory
+### Download the file 
 
+Please download the file to the `/opt/torrosampledata/` directory.
 ```
 $ mkdir -p /opt/torrosampledata
-$ sudo su - torro
 $ cd /opt/torrosampledata
-
-# Download
 $ ls -a /opt/torrosampledata/
-.env  sampledata-backend-001.tar  sampledata-frontend-001.tar  start.sh schema.sql
+.env  sampledata-backend-001.tar  sampledata-frontend-001.tar  start.sh  schema.sql
 ```
 
 Change the folder owner
 ```
-sudo chown -R torro:torro /opt/torrosampledata/
+$ sudo chown -R torro:torro /opt/torrosampledata/
+$ sudo su - torro
+$ cd /opt/torrosampledata
 ```
 
 
@@ -52,13 +52,26 @@ mysql> exit;
 
 ### Turn off the firewall
 
-
 ```
 [torro@Torro-VM2 torrosampledata]$ sudo systemctl stop firewalld
+[torro@Torro-VM2 torrosampledata]$ sudo systemctl disable firewalld
 [torro@Torro-VM2 torrosampledata]$ sudo firewall-cmd --state
 ```
 
-## Setup
+## 2. Setup
+
+### Modify the configuration file
+```
+[torro@Torro-VM2 torrosampledata]$ vi /opt/torrosampledata/.env
+......
+DB_HOST=<HOST>
+DB_PORT=3306
+DB_USER=<USER>
+DB_PASSWORD=<PASSWORD>
+DB_NAME=torroforexcel
+DB_DRIVER=pymysql
+......
+```
 
 ### Load the image
 ```
@@ -101,7 +114,7 @@ Loaded image: torro.ai/sampledata/frontend:0.0.1
 [SUCCESS] Docker image loaded successfully from sampledata-frontend-001.tar
 ```
 
-Service stopped
+### Service stopped
 ```
 [torro@Torro-VM2 torrosampledata]$ ./start.sh stop
 Select service to stop:
@@ -120,7 +133,7 @@ Enter choice (1 or 2): 2
 [SUCCESS] sampledata-backend stopped successfully
 ```
 
-Enable the service
+### Start the service
 ```
 [torro@Torro-VM2 torrosampledata]$ ./start.sh restart
 Select service to restart:
@@ -141,7 +154,7 @@ Enter choice (1 or 2): 2
 [SUCCESS] sampledata-backend restarted successfully
 ```
 
-Check the service status
+### Check the service status
 ```
 [torro@Torro-VM2 torrosampledata]$ ./start.sh status
 [INFO] Docker containers status:
