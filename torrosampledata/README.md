@@ -1,11 +1,17 @@
-# torrosampledata
+# Sample Data
 
+## Prepare
 
 Download the file to the specified directory
 
 ```
-$ ls /opt/torrosampledata/
-backend.env  sampledata-backend-001.tar  sampledata-frontend-001.tar  start.sh
+$ mkdir -p /opt/torrosampledata
+$ sudo su - torro
+$ cd /opt/torrosampledata
+
+# Download
+$ ls -a /opt/torrosampledata/
+.env  sampledata-backend-001.tar  sampledata-frontend-001.tar  start.sh schema.sql
 ```
 
 Change the folder owner
@@ -13,7 +19,48 @@ Change the folder owner
 sudo chown -R torro:torro /opt/torrosampledata/
 ```
 
-Load the image
+
+### Database initialization
+
+If it's the first time, you need to create an account and a database.
+```
+[torro@Torro-VM2 torrosampledata]$ mysql -h <HOST> -P 3306 -u mysql -p
+
+mysql> CREATE USER 'torro-app'@'%' IDENTIFIED BY '<YOUR_PASSWORD>';
+mysql> create database torroforexcel;
+mysql> GRANT ALL PRIVILEGES ON torroforexcel.* TO 'torro-app'@'%' WITH GRANT OPTION; 
+mysql> flush privileges;
+
+mysql> show databases;
+mysql> exit;
+```
+
+Executing init sql file
+
+```
+[torro@Torro-VM2 torrosampledata]$ cd /opt/torrosampledata
+[torro@Torro-VM2 torrosampledata]$ mysql -h <HOST> -P 3306 -u torro-app -p torroforexcel < schema.sql
+```
+
+Check the data table
+```
+[torro@Torro-VM2 torro]$ mysql -h <HOST> -P 3306 -u mysql -p
+mysql> use torroforexcel;
+mysql> show tables;
+mysql> exit;
+```
+
+### Turn off the firewall
+
+
+```
+[torro@Torro-VM2 torrosampledata]$ sudo systemctl stop firewalld
+[torro@Torro-VM2 torrosampledata]$ sudo firewall-cmd --state
+```
+
+## Setup
+
+### Load the image
 ```
 [torro@Torro-VM2 torrosampledata]$ ./start.sh load
 [INFO] Loading Docker image from tar file...
@@ -101,4 +148,14 @@ Check the service status
 CONTAINER ID  IMAGE                               COMMAND               CREATED         STATUS         PORTS       NAMES
 9e1390daa59e  torro.ai/sampledata/frontend:0.0.1  npm run dev -- --...  17 minutes ago  Up 17 minutes              sampledata-frontend
 9a4362efac6f  torro.ai/sampledata/backend:0.0.1   python -m backend...  25 seconds ago  Up 25 seconds              sampledata-backend
+```
+
+### Check the logs
+
+```
+# frontend
+[torro@Torro-VM2 torrosampledata]$ sudo podman logs sampledata-frontend
+
+# backend
+[torro@Torro-VM2 torrosampledata]$ sudo podman logs sampledata-backend
 ```

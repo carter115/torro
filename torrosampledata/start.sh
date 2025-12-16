@@ -54,7 +54,7 @@ restart_service() {
             fi
             # Start the container
             cd ${TORRO_SAMPLEDATA_PATH}
-            ${docker_cmd} run -d --network host --name ${TORRO_FRONTEND_NAME} ${TORRO_FRONTEND_IMAGE}
+            ${docker_cmd} run -d --network host -v ./.env:/app/.env:Z --name ${TORRO_FRONTEND_NAME} ${TORRO_FRONTEND_IMAGE}
             log_success "${TORRO_FRONTEND_NAME} restarted successfully"
             ;;
         2)
@@ -66,7 +66,7 @@ restart_service() {
             fi
             # Start the container
             cd ${TORRO_SAMPLEDATA_PATH}
-            ${docker_cmd} run -d --network host -v ./backend.env:/app/.env:Z --name ${TORRO_BACKEND_NAME} ${TORRO_BACKEND_IMAGE}
+            ${docker_cmd} run -d --network host -v ./.env:/app/.env:Z --name ${TORRO_BACKEND_NAME} ${TORRO_BACKEND_IMAGE}
             log_success "${TORRO_BACKEND_NAME} restarted successfully"
             ;;
         *)
