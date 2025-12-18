@@ -291,6 +291,17 @@ sudo mv /mnt/torro-web-002.tar /opt/torro/images
 sudo chmod +r /opt/torro/images/*.tar
 ```
 
+Load the new image
+```
+[torro@Torro-VM2 torro]$ ./setup.sh load
+[INFO] Loading Docker image from tar file...
+Please enter the path to the tar file: torro-web-002.tar
+
+[torro@Torro-VM2 torro]$ ./setup.sh load
+[INFO] Loading Docker image from tar file...
+Please enter the path to the tar file: torro-core-002.tar
+```
+
 Modify the startup script
 
 ```
