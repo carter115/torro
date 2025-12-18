@@ -338,7 +338,7 @@ server.crt  server.key
 $ sudo cp server.crt server.key /opt/torro/web/certs
 ```
 
-Replace the `server.key` and `server.crt` files in the `/opt/torro/certs/` directory
+Replace the `server.key` and `server.crt` files in the `/opt/torro/web/certs/` directory
 ```
 $ ls /opt/torro/web
 certs  logs  nginx.conf
@@ -470,4 +470,3 @@ f471f18ac9361b4a186c592511976111ff61ed7d40673aa677f72ab2d9f77d6b
 # or
 [torro@dev-server01 opt]$ sudo podman logs torro-core
 ```
-
