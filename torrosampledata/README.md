@@ -114,6 +114,22 @@ Loaded image: torro.ai/sampledata/frontend:0.0.1
 [SUCCESS] Docker image loaded successfully from sampledata-frontend-001.tar
 ```
 
+Check or update the image version
+
+```
+[torro@Torro-VM2 torrosampledata]$ vi start.sh
+#/bin/sh
+set -e
+MYNAME='torro'
+MYGROUP=${MYNAME}
+TORRO_FRONTEND_NAME='sampledata-frontend'
+TORRO_BACKEND_NAME='sampledata-backend'
+TORRO_FRONTEND_IMAGE='torro.ai/sampledata/frontend:0.0.2'  # change this
+TORRO_BACKEND_IMAGE='torro.ai/sampledata/backend:0.0.2'    # change this
+TORRO_SAMPLEDATA_PATH='/opt/torrosampledata'
+......
+```
+
 ### Service stopped
 ```
 [torro@Torro-VM2 torrosampledata]$ ./start.sh stop
