@@ -481,3 +481,84 @@ f471f18ac9361b4a186c592511976111ff61ed7d40673aa677f72ab2d9f77d6b
 # or
 [torro@dev-server01 opt]$ sudo podman logs torro-core
 ```
+
+## 5. Deploy-1220
+
+### 5.1 Copy the new script `torro2.sh`
+
+```
+ls /data/deploy-torro-1218/torro2.sh
+sudo cp /data/deploy-torro-1218/torro2.sh /opt/torro/torro2.sh
+sudo chown torro:torro /opt/torro/torro2.sh
+sudo chmod +x /opt/torro/torro2.sh
+```
+### 5.2 Modify the configuration file `config.ini`
+
+Add 3 lines of LDAP configuration
+```
+sudo su - torro
+[torro@Torro-VM2 ~]$ cd /opt/torro/core
+[torro@Torro-VM2 core]$ vi config.ini
+[IPCONFIG]
+....
+
+[LDAP]
+caCertFile = ca_cert.pem
+validNames = ["openldap","ldap.torro.com","AZLDAPS.hbctxdom.com"]
+
+[DB]
+......
+```
+
+### 5.3 CA certificate file `ca_cert.pem` must exist.
+
+```
+[torro@Torro-VM2 core]$ ls /opt/torro/core/
+ca_cert.pem  config.ini  log.conf
+```
+
+### 5.4 Load the image
+
+```
+[torro@Torro-VM2 core]$ sudo cp /data/torro-core-002.tar /opt/torro/images/torro-core-002.tar
+[torro@Torro-VM2 core]$ sudo chmod +r /opt/torro/images/torro-core-002.tar
+[torro@Torro-VM2 core]$ cd /opt/torro
+
+[torro@Torro-VM2 torro]$ ./torro2.sh load
+[INFO] Loading Docker image from tar file...
+Please enter the path to the tar file: torro-core-002.tar
+[INFO] Loading image from images/torro-core-002.tar...
+Getting image source signatures
+Copying blob 7e49dc6156b0 skipped: already exists
+Copying blob 4e63d33112bb skipped: already exists
+Copying blob 85e965f6d976 skipped: already exists
+Copying blob 22bf750afc0e skipped: already exists
+Copying blob 4f4fb700ef54 skipped: already exists
+Copying blob 35d3e3bba172 skipped: already exists
+Copying config 698e66e24d done   |
+Writing manifest to image destination
+Loaded image: torro.ai/torro/core:0.0.2
+[SUCCESS] Docker image loaded successfully from images/torro-core-002.tar
+```
+
+### 5.5 Restart the service `torro-core`
+
+```
+[torro@Torro-VM2 core]$ cd /opt/torro
+[torro@Torro-VM2 torro]$ ./torro2.sh restart
+[INFO] All required variables are set and paths exist
+Select service to restart:
+1) torro-web
+2) torro-core
+Enter choice (1 or 2): 2
+[INFO] Restarting torro-core...
+Port mappings have been discarded as one of the Host, Container, Pod, and None network modes are in use
+511bb2df5d102fbbe2ae770ec03651bba129cd60f9b1a963ed29c73b1a28c750
+```
+
+### 5.6 Check the logs
+
+```
+# torro-core
+[torro@dev-server01 opt]$ sudo podman logs -f torro-core
+```
