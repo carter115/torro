@@ -180,7 +180,7 @@ load_image() {
     fi
 }
 
-airflow_db_init() { 
+airflow_db_init() {
     log_info "=== Airflow Database Initialization ==="
     log_info "This operation will initialize the Airflow database."
     log_warning "WARNING: If the database already exists, this may cause issues."

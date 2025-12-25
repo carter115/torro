@@ -49,17 +49,28 @@ Executing init sql file
 
 ## 2. Setup
 
-### Modify the configuration file
+### Modify the configuration file: `.env`, `airflow.cfg`, `airflow.env`
 ```
 [torro@Torro-VM2 torroairflow]$ cd /opt/torroairflow
 [torro@Torro-VM2 torroairflow]$ vi .env
 ......
-DB_HOST=<HOST>
-DB_PORT=3306
-DB_USER=<USER>
-DB_PASSWORD=<PASSWORD>
-DB_NAME=torroforexcel
-DB_DRIVER=pymysql
+VITE_API_BASE_URL=https://127.0.0.1/frontend-be
+
+# Flask Configuration
+SECRET_KEY=
+
+# Database Configuration
+MYSQL_HOST=<HOST>
+MYSQL_PORT=3306
+MYSQL_USER=<USER>
+MYSQL_PASSWORD=<PASSWORD>
+MYSQL_DATABASE=torro_discovery
+
+# CORS Configuration
+CORS_ORIGINS=http://127.0.0.1:5000
+ALLOWED_ORIGINS=http://127.0.0.1:5000
+
+BACKEND_PORT=5000
 ......
 
 [torro@Torro-VM2 torroairflow]$ vi airflow.cfg
@@ -145,6 +156,14 @@ TORRO_AIRFLOW_PATH='/opt/torroairflow'
 ......
 ```
 
+### Airflow Database Initialization
+```
+[torro@Torro-VM2 torroairflow]$ ./start.sh init
+[INFO] === Airflow Database Initialization ===
+[INFO] This operation will initialize the Airflow database.
+[WARNING] WARNING: If the database already exists, this may cause issues.
+Do you want to proceed with database initialization? (yes/no): yes
+```
 
 ### Service stopped
 ```
